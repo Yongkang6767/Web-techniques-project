@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>P&G Travel - Tourism Information & Planning System</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  
+  <style>
+    /* --- Base Variables & Reset --- */
+    :root {
+      --primary-gradient: linear-gradient(135deg, #fdfcfb 0%, #f8d0a9 100%);
+      --header-gradient: linear-gradient(90deg, #5a4b41, #3e322b);
+      --accent-color: #e76f51;
+      --accent-hover: #f4a261;
+      --text-main: #5a4b41;
+      --text-light: #8d7a6e;
+      --card-bg: rgba(255, 255, 255, 0.9);
+      --shadow-sm: 0 4px 6px rgba(90, 75, 65, 0.05);
+      --shadow-md: 0 10px 20px rgba(90, 75, 65, 0.1);
+      --radius: 12px;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      background: var(--primary-gradient);
+      background-attachment: fixed;
+      color: var(--text-main);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* --- Header & Glass Navigation --- */
+    .site-header {
+      background: var(--header-gradient);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: var(--shadow-sm);
+      backdrop-filter: blur(5px);
+    }
+
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 0;
+    }
+
+    .logo {
+      color: #fff;
+      font-size: 1.5rem;
+      font-weight: 700;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo i {
+      color: var(--accent-hover);
+    }
+
+    .nav-menu {
+      display: flex;
+      list-style: none;
+      gap: 15px;
+    }
+
+    .nav-menu a {
+      color: rgba(255, 255, 255, 0.85);
+      text-decoration: none;
+      font-weight: 500;
+      padding: 8px 16px;
+      border-radius: 8px;
+      transition: var(--transition);
+    }
+
+    .nav-menu a:hover, .nav-menu a.active {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    /* --- Hero & Interactive Search Section --- */
+    .hero-section {
+      text-align: center;
+      padding: 60px 0 40px;
+      animation: fadeInUp 0.8s ease-out;
+    }
+
+    .hero-section h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      letter-spacing: -0.5px;
+    }
+
+    .hero-section p {
+      color: var(--text-light);
+      font-size: 1.1rem;
+      margin-bottom: 30px;
+    }
+
+    .search-wrapper {
+      max-width: 600px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .search-bar-container {
+      display: flex;
+      background: #fff;
+      padding: 6px;
+      border-radius: 50px;
+      box-shadow: var(--shadow-md);
+      transition: var(--transition);
+      border: 2px solid transparent;
+    }
+
+    .search-bar-container:focus-within {
+      border-color: var(--accent-hover);
+      transform: translateY(-2px);
+    }
+
+    .search-bar-container i {
+      align-self: center;
+      margin-left: 20px;
+      color: var(--text-light);
+      font-size: 1.2rem;
+    }
+
+    .search-input {
+      width: 100%;
+      border: none;
+      outline: none;
+      padding: 12px 16px;
+      font-size: 1rem;
+      color: var(--text-main);
+      background: transparent;
+    }
+
+    /* --- Main Content: Dynamic Destination Layout --- */
+    .main-content {
+      padding: 40px 0 80px;
+    }
+
+    .section-title {
+      font-size: 1.8rem;
+      margin-bottom: 30px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 30px;
+      animation: fadeInUp 1s ease-out;
+    }
+
+    /* --- Card Modern Layout & Smooth Transitions --- */
+    .dest-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .dest-card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .card-img-wrapper {
+      position: relative;
+      height: 200px;
+      overflow: hidden;
+      background: #e2dcd5;
+    }
+
+    .card-img-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: var(--transition);
+    }
+
+    .dest-card:hover .card-img-wrapper img {
+      transform: scale(1.08);
+    }
+
+    .state-badge {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      background: rgba(90, 75, 65, 0.85);
+      color: #fff;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      backdrop-filter: blur(4px);
+    }
+
+    .card-body {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .card-body h3 {
+      font-size: 1.25rem;
+      margin-bottom: 8px;
+    }
+
+    .card-body p {
+      font-size: 0.9rem;
+      color: var(--text-light);
+      margin-bottom: 20px;
+      flex-grow: 1;
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn {
+      padding: 10px 16px;
+      border-radius: 8px;
+      border: none;
+      font-weight: 500;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: var(--accent-color);
+      color: #fff;
+      flex-grow: 2;
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-hover);
+    }
+
+    .btn-secondary {
+      background: rgba(90, 75, 65, 0.1);
+      color: var(--text-main);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(90, 75, 65, 0.2);
+    }
+
+    /* --- Meaningful Error State View --- */
+    .error-state {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 60px 20px;
+      background: rgba(255, 255, 255, 0.5);
+      border-radius: var(--radius);
+      display: none;
+    }
+
+    .error-state i {
+      font-size: 3rem;
+      color: var(--text-light);
+      margin-bottom: 15px;
+    }
+
+    /* --- Animations --- */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* --- Footer --- */
+    footer {
+      background: var(--header-gradient);
+      color: rgba(255, 255, 255, 0.7);
+      text-align: center;
+      padding: 30px 0;
+      font-size: 0.9rem;
+      margin-top: auto;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container nav-container">
+      <a href="index.html" class="logo">
+        <i class="fas fa-compass"></i> P&G Travel
+      </a>
+      <nav>
+        <ul class="nav-menu">
+          <li><a href="index.html" class="active">Explore</a></li>
+          <li><a href="planner.html">Trip Planner</a></li>
+          <li><a href="booking.html">Bookings</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero-section">
+    <div class="container">
+      <h1>Plan Your Perfect Malaysian Holiday</h1>
+      <p>Discover historical landmarks, pristine islands, and urban adventures</p>
+      <div class="search-wrapper">
+        <div class="search-bar-container">
+          <i class="fas fa-search"></i>
+          <input type="text" id="destinationSearch" class="search-input" placeholder="Search by state or attraction name..." autocomplete="off"/>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <main class="container main-content">
+    <h2 class="section-title"><i class="fas fa-map-marked-alt"></i> Featured Destinations</h2>
+    
+    <div class="grid-container" id="destination-grid">
+      <div class="error-state" id="empty-search-state">
+        <i class="fas fa-map-signs"></i>
+        <h3>No matching destinations found</h3>
+        <p>Try searching for options like "Johor", "Penang", "Langkawi", or "Kuala Lumpur".</p>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 P&G Travel System. Built with clean web techniques.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Mock Database Array (Easily swapped out tomorrow for a fetch() request to get_destinations.php)
+    const destinationsDataset = [
+      { id: 1, name: "Legoland Malaysia", state: "Johor", desc: "A world-class interactive theme park featuring millions of LEGO bricks.", img: "https://images.unsplash.com/photo-1569154941061-e231b4725ef1?auto=format&fit=crop&w=500&q=80" },
+      { id: 2, name: "Langkawi Island", state: "Kedah", desc: "An archipelago of 99 magical tropical islands in the Andaman Sea.", img: "https://images.unsplash.com/photo-1544644181-1484b3fdfc62?auto=format&fit=crop&w=500&q=80" },
+      { id: 3, name: "Petronas Twin Towers", state: "Kuala Lumpur", desc: "Iconic ultra-tall twin skyscrapers dominating the city skyline.", img: "https://images.unsplash.com/photo-1596422846543-75c6fc18a52b?auto=format&fit=crop&w=500&q=80" },
+      { id: 4, name: "George Town Streets", state: "Penang", desc: "A UNESCO World Heritage zone famous for beautiful murals and street food.", img: "https://images.unsplash.com/photo-1626082895617-2c6de3476af7?auto=format&fit=crop&w=500&q=80" }
+    ];
+
+    const gridContainer = document.getElementById('destination-grid');
+    const searchInput = document.getElementById('destinationSearch');
+    const errorState = document.getElementById('empty-search-state');
+
+    // Function to render cards dynamically onto UI
+    function displayDestinations(items) {
+      // Clear previous entries but preserve the error container structural markup
+      const cards = gridContainer.querySelectorAll('.dest-card');
+      cards.forEach(card => card.remove());
+
+      if (items.length === 0) {
+        errorState.style.display = 'block';
+        return;
+      }
+      errorState.style.display = 'none';
+
+      items.forEach(item => {
+        const cardElement = document.createElement('div');
+        cardElement.className = 'dest-card';
+        cardElement.innerHTML = `
+          <div class="card-img-wrapper">
+            <span class="state-badge">${item.state}</span>
+            <img src="${item.img}" alt="${item.name}">
+          </div>
+          <div class="card-body">
+            <h3>${item.name}</h3>
+            <p>${item.desc}</p>
+            <div class="card-actions">
+              <button class="btn btn-primary" onclick="addToItinerary(${item.id})">
+                <i class="fas fa-plus"></i> Add to Itinerary
+              </button>
+            </div>
+          </div>
+        `;
+        gridContainer.appendChild(cardElement);
+      });
+    }
+
+    // High performance instantaneous matching filter algorithm
+    searchInput.addEventListener('input', (e) => {
+      const keyword = e.target.value.toLowerCase().trim();
+      const filtered = destinationsDataset.filter(dest => 
+        dest.name.toLowerCase().includes(keyword) || 
+        dest.state.toLowerCase().includes(keyword)
+      );
+      displayDestinations(filtered);
+    });
+
+    // Mock planner action to serve as template for day 2/3 SQL actions
+    function addToItinerary(id) {
+      alert("Added to your Planning Canvas! On Day 2, we will connect this button to execute a secure query updating your MySQL itinerary schema.");
+    }
+
+    // Initialize UI displaying all values automatically on boot
+    document.addEventListener("DOMContentLoaded", () => {
+      displayDestinations(destinationsDataset);
+    });
+  </script>
+</body>
+</html>
