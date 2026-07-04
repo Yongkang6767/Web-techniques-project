@@ -361,14 +361,15 @@
   </footer>
 
   <script>
-    // Mock Database Array (Easily swapped out tomorrow for a fetch() request to get_destinations.php)
-    const destinationsDataset = [
-      { id: 1, name: "Legoland Malaysia", state: "Johor", desc: "A world-class interactive theme park featuring millions of LEGO bricks.", img: "https://images.unsplash.com/photo-1569154941061-e231b4725ef1?auto=format&fit=crop&w=500&q=80" },
-      { id: 2, name: "Langkawi Island", state: "Kedah", desc: "An archipelago of 99 magical tropical islands in the Andaman Sea.", img: "https://images.unsplash.com/photo-1544644181-1484b3fdfc62?auto=format&fit=crop&w=500&q=80" },
-      { id: 3, name: "Petronas Twin Towers", state: "Kuala Lumpur", desc: "Iconic ultra-tall twin skyscrapers dominating the city skyline.", img: "https://images.unsplash.com/photo-1596422846543-75c6fc18a52b?auto=format&fit=crop&w=500&q=80" },
-      { id: 4, name: "George Town Streets", state: "Penang", desc: "A UNESCO World Heritage zone famous for beautiful murals and street food.", img: "https://images.unsplash.com/photo-1626082895617-2c6de3476af7?auto=format&fit=crop&w=500&q=80" }
-    ];
 
+const destinationsDataset = [
+  { id: 1, name: "Legoland Malaysia", state: "Johor", desc: "A world-class interactive theme park featuring millions of LEGO bricks.", img: "https://images.unsplash.com/photo-1569154941061-e231b4725ef1?auto=format&fit=crop&w=500&q=80" },
+  { id: 2, name: "Langkawi Island", state: "Kedah", desc: "An archipelago of 99 magical tropical islands in the Andaman Sea.", img: "https://images.unsplash.com/photo-1544644181-1484b3fdfc62?auto=format&fit=crop&w=500&q=80" },
+  { id: 3, name: "Petronas Twin Towers", state: "Kuala Lumpur", desc: "Iconic ultra-tall twin skyscrapers dominating the city skyline.", img: "https://images.unsplash.com/photo-1596422846543-75c6fc18a52b?auto=format&fit=crop&w=500&q=80" },
+  { id: 4, name: "George Town Streets", state: "Penang", desc: "A UNESCO World Heritage zone famous for beautiful murals and street food.", img: "https://images.unsplash.com/photo-1626082895617-2c6de3476af7?auto=format&fit=crop&w=500&q=80" },
+  { id: 5, name: "Genting Highlands", state: "Pahang", desc: "A vibrant hill resort featuring outdoor theme parks, entertainment, and cool mountain air.", img: "https://images.unsplash.com/photo-1590759668628-05b0fc34bb70?auto=format&fit=crop&w=500&q=80" },
+  { id: 6, name: "A Famosa Fort", state: "Melaka", desc: "A historic Portuguese fortress reflecting rich colonial heritage and architectural wonders.", img: "https://images.unsplash.com/photo-1590050752117-238cb0fb12b1?auto=format&fit=crop&w=500&q=80" }
+];
     const gridContainer = document.getElementById('destination-grid');
     const searchInput = document.getElementById('destinationSearch');
     const errorState = document.getElementById('empty-search-state');
