@@ -362,69 +362,119 @@
 
   <script>
 
-const destinationsDataset = [
-  { id: 1, name: "Legoland Malaysia", state: "Johor", desc: "A world-class interactive theme park featuring millions of LEGO bricks.", img: "https://www.kkday.com/en/blog/wp-content/uploads/featured_legoland.jpg" },
-  { id: 2, name: "Langkawi Island", state: "Kedah", desc: "An archipelago of 99 magical tropical islands in the Andaman Sea.", img: "https://upload.wikimedia.org/wikipedia/commons/6/6c/Eagle_square_at_Kuah_Langkawi.jpg" },
-  { id: 3, name: "Petronas Twin Towers", state: "Kuala Lumpur", desc: "Iconic ultra-tall twin skyscrapers dominating the city skyline.", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSjQ9pac9rPGT_m9m3tjzu7PUQ1crOuwKUUuVi_ASsPGQ&s=10" },
-  { id: 4, name: "George Town Streets", state: "Penang", desc: "A UNESCO World Heritage zone famous for beautiful murals and street food.", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfKS5HNPnjhm95h8tDx0lhsUVO-RIY4jrq3t5wqqABdw&s=10" },
-  { id: 5, name: "Genting Highlands", state: "Pahang", desc: "A vibrant hill resort featuring outdoor theme parks, entertainment, and cool mountain air.", img: "https://www.pelago.com/img/products/MY-Malaysia/genting-highlands-day-tour-an-exciting-and-fun-filled-experience/64ba95f6-1b6d-42a3-811a-9aeff5bd3941_genting-highlands-day-tour-an-exciting-and-fun-filled-experience-xlarge.jpg" },
-  { id: 6, name: "A Famosa Fort", state: "Melaka", desc: "A historic Portuguese fortress reflecting rich colonial heritage and architectural wonders.", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBoAFaNqyHAfq2_dv4h-Pt8aHf7cnwf2HBvKe8KUqVlA&s=10" }
-];
-    const gridContainer = document.getElementById('destination-grid');
-    const searchInput = document.getElementById('destinationSearch');
-    const errorState = document.getElementById('empty-search-state');
+let destinationsDataset = [];
+   const gridContainer = document.getElementById('destination-grid');
+const searchInput = document.getElementById('destinationSearch');
+const errorState = document.getElementById('empty-search-state');
 
-    // Function to render cards dynamically onto UI
-    function displayDestinations(items) {
-      // Clear previous entries but preserve the error container structural markup
-      const cards = gridContainer.querySelectorAll('.dest-card');
-      cards.forEach(card => card.remove());
+// 1. NEW FUNCTION: Fetch real database rows from your PHP API
+async function loadDestinationsFromDB() {
+  try {
+    const response = await fetch('api/get_destinations.php');
+    const result = await response.json();
 
-      if (items.length === 0) {
-        errorState.style.display = 'block';
-        return;
-      }
-      errorState.style.display = 'none';
-
-      items.forEach(item => {
-        const cardElement = document.createElement('div');
-        cardElement.className = 'dest-card';
-        cardElement.innerHTML = `
-          <div class="card-img-wrapper">
-            <span class="state-badge">${item.state}</span>
-            <img src="${item.img}" alt="${item.name}">
-          </div>
-          <div class="card-body">
-            <h3>${item.name}</h3>
-            <p>${item.desc}</p>
-            <div class="card-actions">
-              <button class="btn btn-primary" onclick="addToItinerary(${item.id})">
-                <i class="fas fa-plus"></i> Add to Itinerary
-              </button>
-            </div>
-          </div>
-        `;
-        gridContainer.appendChild(cardElement);
-      });
+    if (result.success) {
+      destinationsDataset = result.data; // Store backend data globally
+      displayDestinations(destinationsDataset); // Render it on UI
+    } else {
+      console.error('API Error:', result.error);
     }
+  } catch (error) {
+    console.error('Failed to establish backend database fetch connection:', error);
+  }
+}
 
-    // High performance instantaneous matching filter algorithm
-    searchInput.addEventListener('input', (e) => {
-      const keyword = e.target.value.toLowerCase().trim();
-      const filtered = destinationsDataset.filter(dest => 
-        dest.name.toLowerCase().includes(keyword) || 
-        dest.state.toLowerCase().includes(keyword)
-      );
-      displayDestinations(filtered);
+// 2. MODIFIED: Renders elements cleanly with standard SQL column naming patterns
+function displayDestinations(items) {
+  const cards = gridContainer.querySelectorAll('.dest-card');
+  cards.forEach(card => card.remove());
+
+  if (items.length === 0) {
+    errorState.style.display = 'block';
+    return;
+  }
+  errorState.style.display = 'none';
+
+  items.forEach(item => {
+    const cardElement = document.createElement('div');
+    cardElement.className = 'dest-card';
+    
+    // Fallback image url handling if data is missing or NULL
+    const finalImg = item.image_url ? item.image_url : 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=500';
+
+    cardElement.innerHTML = `
+      <div class="card-img-wrapper">
+        <span class="state-badge">${item.state}</span>
+        <img src="${finalImg}" alt="${item.name}">
+      </div>
+      <div class="card-body">
+        <h3>${item.name}</h3>
+        <p>${item.description || 'No description available.'}</p>
+        
+        <div style="margin-bottom: 15px;">
+          <label style="font-size: 0.8rem; font-weight: 500; display: block; margin-bottom: 4px;">Visit Date:</label>
+          <input type="date" id="date-${item.id}" style="width: 100%; padding: 6px 12px; border: 1px solid #dcd5cf; border-radius: 6px; outline: none;" required>
+        </div>
+
+        <div class="card-actions">
+          <button class="btn btn-primary" onclick="addToItinerary(${item.id})">
+            <i class="fas fa-plus"></i> Add to Itinerary
+          </button>
+        </div>
+      </div>
+    `;
+    gridContainer.appendChild(cardElement);
+  });
+}
+
+// 3. RE-ENGINEERED: Connects your button interaction directly to add_itinerary.php
+async function addToItinerary(id) {
+  const dateInput = document.getElementById(`date-${id}`);
+  const visitDate = dateInput.value;
+
+  if (!visitDate) {
+    alert("Please select a visit date before compiling your plan!");
+    return;
+  }
+
+  const payload = {
+    destination_id: id,
+    visit_date: visitDate
+  };
+
+  try {
+    const response = await fetch('api/add_itinerary.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
     });
+    const result = await response.json();
 
-    function addToItinerary(id) {
-      alert("Added to your Booking Plan!");
+    if (result.success) {
+      alert("Destination successfully added to your itinerary!");
+      dateInput.value = ''; // Clean field
+    } else {
+      alert("Error compilation: " + result.error);
     }
+  } catch (error) {
+    console.error("Transmission error occurred:", error);
+  }
+}
 
-    document.addEventListener("DOMContentLoaded", () => {
-      displayDestinations(destinationsDataset);
-    });
+// 4. INSTANT FILTER ALGORITHM (Stays mostly same, maps database naming conventions)
+searchInput.addEventListener('input', (e) => {
+  const keyword = e.target.value.toLowerCase().trim();
+  const filtered = destinationsDataset.filter(dest => 
+    dest.name.toLowerCase().includes(keyword) || 
+    dest.state.toLowerCase().includes(keyword)
+  );
+  displayDestinations(filtered);
+});
+
+// Initialize by calling our API wrapper function instead of a local loop array
+document.addEventListener("DOMContentLoaded", () => {
+  loadDestinationsFromDB();
+});
   </script>
 </body>
 </html>
