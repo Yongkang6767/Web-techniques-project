@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title> My Trip Planner - Travel Malaysia </title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  
+  <style>
+    :root {
+      --primary-gradient: linear-gradient(135deg, #fdfcfb 0%, #f8d0a9 100%);
+      --header-gradient: linear-gradient(90deg, #5a4b41, #3e322b);
+      --accent-color: #e76f51;
+      --danger-color: #d9534f;
+      --text-main: #5a4b41;
+      --text-light: #8d7a6e;
+      --card-bg: rgba(255, 255, 255, 0.9);
+      --shadow-sm: 0 4px 6px rgba(90, 75, 65, 0.05);
+      --shadow-md: 0 10px 20px rgba(90, 75, 65, 0.1);
+      --radius: 12px;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      background: var(--primary-gradient);
+      background-attachment: fixed;
+      color: var(--text-main);
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+      width: 100%;
+    }
+
+    .site-header {
+      background: var(--header-gradient);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 0;
+    }
+
+    .logo {
+      color: #fff;
+      font-size: 1.5rem;
+      font-weight: 700;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo i {
+      color: #f4a261;
+    }
+
+    .nav-menu {
+      display: flex;
+      list-style: none;
+      gap: 15px;
+    }
+
+    .nav-menu a {
+      color: rgba(255, 255, 255, 0.85);
+      text-decoration: none;
+      font-weight: 500;
+      padding: 8px 16px;
+      border-radius: 8px;
+      transition: var(--transition);
+    }
+
+    .nav-menu a:hover, .nav-menu a.active {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .main-content {
+      padding: 50px 0 80px;
+      flex-grow: 1;
+    }
+
+    .section-title {
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-subtitle {
+      color: var(--text-light);
+      margin-bottom: 30px;
+    }
+
+    /* --- Itinerary List Layout --- */
+    .itinerary-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .itinerary-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      transition: var(--transition);
+    }
+
+    .itinerary-card:hover {
+      transform: translateX(5px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .itinerary-img {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 8px;
+      background: #e2dcd5;
+    }
+
+    .itinerary-details {
+      flex-grow: 1;
+    }
+
+    .itinerary-details h3 {
+      font-size: 1.3rem;
+      margin-bottom: 5px;
+    }
+
+    .itinerary-meta {
+      font-size: 0.9rem;
+      color: var(--text-light);
+      margin-bottom: 8px;
+      display: flex;
+      gap: 15px;
+    }
+
+    .itinerary-meta i {
+      color: var(--accent-color);
+    }
+
+    .itinerary-desc {
+      font-size: 0.9rem;
+      color: var(--text-main);
+    }
+
+    .btn-remove {
+      background: transparent;
+      color: var(--danger-color);
+      border: 1px solid var(--danger-color);
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: var(--transition);
+    }
+
+    .btn-remove:hover {
+      background: var(--danger-color);
+      color: #fff;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      background: rgba(255, 255, 255, 0.5);
+      border-radius: var(--radius);
+      display: none;
+    }
+
+    .empty-state i {
+      font-size: 3rem;
+      color: var(--text-light);
+      margin-bottom: 15px;
+    }
+
+    footer {
+      background: var(--header-gradient);
+      color: rgba(255, 255, 255, 0.7);
+      text-align: center;
+      padding: 30px 0;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container nav-container">
+      <a href="index.html" class="logo">
+        <i class="fas fa-compass"></i> Travel Malaysia
+      </a>
+      <nav>
+        <ul class="nav-menu">
+          <li><a href="index.html">Explore</a></li>
+          <li><a href="planner.html" class="active">Trip Planner</a></li>
+          <li><a href="booking.html">Bookings</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container main-content">
+    <h2 class="section-title"><i class="fas fa-calendar-alt"></i> My Scheduled Itinerary</h2>
+    <p class="section-subtitle">Manage your chronological travel dates and route plans below.</p>
+    
+    <div class="itinerary-list" id="itinerary-container">
+      <div class="empty-state" id="empty-itinerary-state">
+        <i class="fas fa-suitcase-rolling"></i>
+        <h3>Your Trip Planner is empty</h3>
+        <p>Go back to the Explore tab to schedule custom destinations onto your calendar!</p>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 Travel Malaysia.</p>
+    </div>
+  </footer>
+
+  <script>
+    const container = document.getElementById('itinerary-container');
+    const emptyState = document.getElementById('empty-itinerary-state');
+
+    // 1. Fetch live itinerary schedules from the backend
+    async function loadItinerary() {
+      try {
+        const response = await fetch('api/get_itinerary.php');
+        const result = await response.json();
+
+        if (result.success) {
+          displayItineraryItems(result.data);
+        } else {
+          console.error("Database compilation error:", result.error);
+        }
+      } catch (error) {
+        console.error("Network connection failure fetching planner profiles:", error);
+      }
+    }
+
+    // 2. Render rows dynamically onto the dashboard setup
+    function displayItineraryItems(items) {
+      // Remove any existing card rows without deleting structural default templates
+      const existingCards = container.querySelectorAll('.itinerary-card');
+      existingCards.forEach(card => card.remove());
+
+      if (!items || items.length === 0) {
+        emptyState.style.display = 'block';
+        return;
+      }
+      emptyState.style.display = 'none';
+
+      items.forEach(item => {
+        const row = document.createElement('div');
+        row.className = 'itinerary-card';
+        
+        const imgUrl = item.image_url ? item.image_url : 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=500';
+
+        row.innerHTML = `
+          <img src="${imgUrl}" alt="${item.destination_name}" class="itinerary-img">
+          <div class="itinerary-details">
+            <h3>${item.destination_name}</h3>
+            <div class="itinerary-meta">
+              <span><i class="fas fa-map-marker-alt"></i> ${item.state}</span>
+              <span><i class="fas fa-calendar-day"></i> Planned Date: <strong>${item.visit_date}</strong></span>
+            </div>
+            <p class="itinerary-desc">${item.description || 'No descriptive information available.'}</p>
+          </div>
+          <button class="btn-remove" onclick="removeTripItem(${item.itinerary_id})">
+            <i class="fas fa-trash-alt"></i> Remove
+          </button>
+        `;
+        container.appendChild(row);
+      });
+    }
+
+    // 3. Delete selected row using your friend's deleted_itinerary API hook
+    async function removeTripItem(id) {
+      if (!confirm("Are you sure you want to drop this destination from your scheduled plans?")) return;
+
+      try {
+        const response = await fetch('api/deleted_itinerary.php', {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: id })
+        });
+        const result = await response.json();
+
+        if (result.success) {
+          loadItinerary(); // Reload view seamlessly
+        } else {
+          alert("Could not remove item: " + result.error);
+        }
+      } catch (error) {
+        console.error("Deletion execution transmission error:", error);
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", loadItinerary);
+  </script>
+</body>
+</html>

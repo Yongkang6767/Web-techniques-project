@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title> Confirm Bookings - Travel Malaysia </title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  
+  <style>
+    :root {
+      --primary-gradient: linear-gradient(135deg, #fdfcfb 0%, #f8d0a9 100%);
+      --header-gradient: linear-gradient(90deg, #5a4b41, #3e322b);
+      --accent-color: #2a9d8f;
+      --accent-hover: #264653;
+      --text-main: #5a4b41;
+      --text-light: #8d7a6e;
+      --card-bg: rgba(255, 255, 255, 0.9);
+      --shadow-sm: 0 4px 6px rgba(90, 75, 65, 0.05);
+      --shadow-md: 0 10px 20px rgba(90, 75, 65, 0.1);
+      --radius: 12px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      background: var(--primary-gradient);
+      background-attachment: fixed;
+      color: var(--text-main);
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 24px;
+      width: 100%;
+    }
+
+    .site-header {
+      background: var(--header-gradient);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 0;
+    }
+
+    .logo {
+      color: #fff;
+      font-size: 1.5rem;
+      font-weight: 700;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo i {
+      color: #f4a261;
+    }
+
+    .nav-menu {
+      display: flex;
+      list-style: none;
+      gap: 15px;
+    }
+
+    .nav-menu a {
+      color: rgba(255, 255, 255, 0.85);
+      text-decoration: none;
+      font-weight: 500;
+      padding: 8px 16px;
+      border-radius: 8px;
+    }
+
+    .nav-menu a:hover, .nav-menu a.active {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .main-content {
+      padding: 60px 0 80px;
+      flex-grow: 1;
+    }
+
+    .booking-summary-box {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 40px;
+      box-shadow: var(--shadow-md);
+      text-align: center;
+    }
+
+    .booking-summary-box i.main-icon {
+      font-size: 4rem;
+      color: var(--accent-color);
+      margin-bottom: 20px;
+    }
+
+    .booking-summary-box h2 {
+      font-size: 2rem;
+      margin-bottom: 12px;
+    }
+
+    .booking-summary-box p {
+      color: var(--text-light);
+      margin-bottom: 30px;
+    }
+
+    .stats-badge {
+      display: inline-block;
+      background: #eaf5f3;
+      color: var(--accent-color);
+      padding: 12px 30px;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      margin-bottom: 30px;
+      border: 1px dashed var(--accent-color);
+    }
+
+    .btn-checkout {
+      display: block;
+      width: 100%;
+      background: var(--accent-color);
+      color: #fff;
+      padding: 15px;
+      border-radius: 8px;
+      border: none;
+      font-weight: 600;
+      font-size: 1.1rem;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .btn-checkout:hover {
+      background: var(--accent-hover);
+    }
+
+    footer {
+      background: var(--header-gradient);
+      color: rgba(255, 255, 255, 0.7);
+      text-align: center;
+      padding: 30px 0;
+      font-size: 0.9rem;
+      margin-top: auto;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container nav-container">
+      <a href="index.html" class="logo">
+        <i class="fas fa-compass"></i> Travel Malaysia
+      </a>
+      <nav>
+        <ul class="nav-menu">
+          <li><a href="index.html">Explore</a></li>
+          <li><a href="planner.html">Trip Planner</a></li>
+          <li><a href="booking.html" class="active">Bookings</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container main-content">
+    <div class="booking-summary-box">
+      <i class="fas fa-ticket-alt main-icon"></i>
+      <h2>Review & Secure Your Booking Plan</h2>
+      <p>Confirm ticket passes, resort check-ins, and scheduled destination guides in one click.</p>
+      
+      <div class="stats-badge" id="ticket-counter">
+        Total Scheduled Stops: Loading...
+      </div>
+
+      <button class="btn-checkout" onclick="executeCheckout()">
+        <i class="fas fa-credit-card"></i> Proceed to Checkout
+      </button>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 Travel Malaysia.</p>
+    </div>
+  </footer>
+
+  <script>
+    async function loadBookingSummary() {
+      try {
+        const response = await fetch('api/get_itinerary.php');
+        const result = await response.json();
+
+        if (result.success) {
+          const count = result.count || 0;
+          document.getElementById('ticket-counter').innerHTML = `Total Scheduled Stops: <strong>${count} Destinations</strong>`;
+        } else {
+          document.getElementById('ticket-counter').innerText = "Total Scheduled Stops: 0";
+        }
+      } catch (error) {
+        console.error("Failed to connect to summary data counter:", error);
+      }
+    }
+
+    function executeCheckout() {
+      alert("Redirecting securely to global booking networks... Enjoy your journey across Malaysia! 🇲🇾");
+    }
+
+    document.addEventListener("DOMContentLoaded", loadBookingSummary);
+  </script>
+</body>
+</html>
