@@ -363,12 +363,12 @@
   <script>
 
 const destinationsDataset = [
-  { id: 1, name: "Legoland Malaysia", state: "Johor", desc: "A world-class interactive theme park featuring millions of LEGO bricks.", img: "https://images.unsplash.com/photo-1569154941061-e231b4725ef1?auto=format&fit=crop&w=500&q=80" },
-  { id: 2, name: "Langkawi Island", state: "Kedah", desc: "An archipelago of 99 magical tropical islands in the Andaman Sea.", img: "https://images.unsplash.com/photo-1544644181-1484b3fdfc62?auto=format&fit=crop&w=500&q=80" },
-  { id: 3, name: "Petronas Twin Towers", state: "Kuala Lumpur", desc: "Iconic ultra-tall twin skyscrapers dominating the city skyline.", img: "https://images.unsplash.com/photo-1596422846543-75c6fc18a52b?auto=format&fit=crop&w=500&q=80" },
-  { id: 4, name: "George Town Streets", state: "Penang", desc: "A UNESCO World Heritage zone famous for beautiful murals and street food.", img: "https://images.unsplash.com/photo-1626082895617-2c6de3476af7?auto=format&fit=crop&w=500&q=80" },
-  { id: 5, name: "Genting Highlands", state: "Pahang", desc: "A vibrant hill resort featuring outdoor theme parks, entertainment, and cool mountain air.", img: "https://images.unsplash.com/photo-1590759668628-05b0fc34bb70?auto=format&fit=crop&w=500&q=80" },
-  { id: 6, name: "A Famosa Fort", state: "Melaka", desc: "A historic Portuguese fortress reflecting rich colonial heritage and architectural wonders.", img: "https://images.unsplash.com/photo-1590050752117-238cb0fb12b1?auto=format&fit=crop&w=500&q=80" }
+  { id: 1, name: "Legoland Malaysia", state: "Johor", desc: "A world-class interactive theme park featuring millions of LEGO bricks.", img: "https://www.kkday.com/en/blog/wp-content/uploads/featured_legoland.jpg" },
+  { id: 2, name: "Langkawi Island", state: "Kedah", desc: "An archipelago of 99 magical tropical islands in the Andaman Sea.", img: "https://upload.wikimedia.org/wikipedia/commons/6/6c/Eagle_square_at_Kuah_Langkawi.jpg" },
+  { id: 3, name: "Petronas Twin Towers", state: "Kuala Lumpur", desc: "Iconic ultra-tall twin skyscrapers dominating the city skyline.", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSjQ9pac9rPGT_m9m3tjzu7PUQ1crOuwKUUuVi_ASsPGQ&s=10" },
+  { id: 4, name: "George Town Streets", state: "Penang", desc: "A UNESCO World Heritage zone famous for beautiful murals and street food.", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfKS5HNPnjhm95h8tDx0lhsUVO-RIY4jrq3t5wqqABdw&s=10" },
+  { id: 5, name: "Genting Highlands", state: "Pahang", desc: "A vibrant hill resort featuring outdoor theme parks, entertainment, and cool mountain air.", img: "https://www.pelago.com/img/products/MY-Malaysia/genting-highlands-day-tour-an-exciting-and-fun-filled-experience/64ba95f6-1b6d-42a3-811a-9aeff5bd3941_genting-highlands-day-tour-an-exciting-and-fun-filled-experience-xlarge.jpg" },
+  { id: 6, name: "A Famosa Fort", state: "Melaka", desc: "A historic Portuguese fortress reflecting rich colonial heritage and architectural wonders.", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBoAFaNqyHAfq2_dv4h-Pt8aHf7cnwf2HBvKe8KUqVlA&s=10" }
 ];
     const gridContainer = document.getElementById('destination-grid');
     const searchInput = document.getElementById('destinationSearch');
@@ -418,12 +418,10 @@ const destinationsDataset = [
       displayDestinations(filtered);
     });
 
-    // Mock planner action to serve as template for day 2/3 SQL actions
     function addToItinerary(id) {
       alert("Added to your Booking Plan!");
     }
 
-    // Initialize UI displaying all values automatically on boot
     document.addEventListener("DOMContentLoaded", () => {
       displayDestinations(destinationsDataset);
     });
